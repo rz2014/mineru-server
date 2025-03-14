@@ -1,0 +1,6 @@
+apiVersion: v2
+name: mineru-server
+version: 0.1.0
+description: A Helm Charts for MinerU Server.
+type: application
+appVersion: 0.1.0

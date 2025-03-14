@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mineru-server
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- include "mineru-server.annotations" . | nindent 4 }}
+  labels:
+    {{- include "mineru-server.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: mineru-server
+  template:
+    metadata:
+      labels:
+        app: mineru-server
+    spec:
+      containers:
+      - name: mineru-server
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /root/magic-pdf.json
+            subPath: magic-pdf.json
+          - name: models-volume
+            mountPath: /tmp/models
+          - name: layoutreader-model-volume
+            mountPath: /tmp/layoutreader
+          - mountPath: /tmp
+            name: host-tmp
+        ports:
+        - containerPort: 8300
+        {{- with .Values.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mineru-config
+        - name: models-volume
+          hostPath:
+            path: {{ .Values.models_dir }}
+            type: Directory
+        - name: layoutreader-model-volume
+          hostPath:
+            path: {{ .Values.layoutreader_model_dir }}
+            type: Directory
+        - hostPath:
+            path: /tmp
+            type: Directory
+          name: host-tmp

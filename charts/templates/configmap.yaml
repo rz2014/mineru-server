@@ -1,0 +1,33 @@
+apiVersion: v1
+data:
+  magic-pdf.json: |
+      {
+          "bucket_info": {
+              "bucket-name-1": [
+                  "ak",
+                  "sk",
+                  "endpoint"
+              ],
+              "bucket-name-2": [
+                  "ak",
+                  "sk",
+                  "endpoint"
+              ]
+          },
+          "models-dir": "/tmp/models",
+          "device-mode": {{ .Values.device | default "cuda" | quote }}
+          "table-config": {
+              "model": "TableMaster",
+              "is_table_recog_enable": true,
+              "max_time": 400
+          },
+          "layoutreader-model-dir": "/tmp/layoutreader"
+      }a
+kind: ConfigMap
+metadata:
+  name: mineru-config
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- include "mineru-server.annotations" . | nindent 4 }}
+  labels:
+    {{- include "mineru-server.labels" . | nindent 4 }}

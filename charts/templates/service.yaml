@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pie-mineru-server
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- include "mineru-server.annotations" . | nindent 4 }}
+  labels:
+    {{- include "mineru-server.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: mineru-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8300

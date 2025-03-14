@@ -1,0 +1,12 @@
+image:
+  repository: rz2014/mineru-server
+  tag: latest
+  pullPolicy: IfNotPresent
+replicaCount: 1
+device: cuda
+models_dir: /tmp/models
+layoutreader_model_dir: /tmp/layoutreader
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
