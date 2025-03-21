@@ -17,6 +17,9 @@ spec:
       labels:
         app: mineru-server
     spec:
+      {{- if .Values.runtimeClassName }}
+      runtimeClassName: {{ .Values.runtimeClassName | quote }}
+      {{- end }}
       containers:
       - name: mineru-server
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

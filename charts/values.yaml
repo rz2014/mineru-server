@@ -14,7 +14,9 @@ config:
   device: cuda # config device-mode for magic-pdf. Default is cuda. Avaliable is cpu
   models_dir: /tmp/models # special model dir.
   layoutreader_model_dir: /tmp/layoutreader #special layout model dir
-  magic_pdf_json: "" # 单独提供 magic-pdf.json 文件，更加灵活。 
+  magic_pdf_json: "" # 单独提供 magic-pdf.json 文件，更加灵活。
+## 如果需要启用nvidia的卡，设置以下的runtimeClassName为nvidia
+runtimeClassName: null # Avaliable values is nvidia
 resources: {}
 nodeSelector: {}
 tolerations: []
