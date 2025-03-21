@@ -17,18 +17,23 @@ spec:
       labels:
         app: mineru-server
     spec:
+      {{- if .Values.runtimeClassName }}
+      runtimeClassName: {{ .Values.runtimeClassName | quote }}
+      {{- end }}
       containers:
       - name: mineru-server
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         volumeMounts:
+          {{- if and .Values.config .Values.config.enable }}
           - name: config-volume
             mountPath: /root/magic-pdf.json
             subPath: magic-pdf.json
           - name: models-volume
-            mountPath: /tmp/models
+            mountPath: {{ .Values.config.models_dir | quote }}
           - name: layoutreader-model-volume
-            mountPath: /tmp/layoutreader
+            mountPath: {{ .Values.config.layoutreader_model_dir | quote }}
+          {{- end }}
           - mountPath: /tmp
             name: host-tmp
         ports:
@@ -50,17 +55,19 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        {{- if and .Values.config .Values.config.enable }}
         - name: config-volume
           configMap:
             name: mineru-config
         - name: models-volume
           hostPath:
-            path: {{ .Values.models_dir }}
+            path: {{ .Values.config.models_dir }}
             type: Directory
         - name: layoutreader-model-volume
           hostPath:
-            path: {{ .Values.layoutreader_model_dir }}
+            path: {{ .Values.config.layoutreader_model_dir }}
             type: Directory
+        {{- end }}
         - hostPath:
             path: /tmp
             type: Directory

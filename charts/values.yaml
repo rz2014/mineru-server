@@ -1,11 +1,22 @@
+# Default values for tes.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
 image:
   repository: rz2014/mineru-server
   tag: latest
   pullPolicy: IfNotPresent
-replicaCount: 1
-device: cuda
-models_dir: /tmp/models
-layoutreader_model_dir: /tmp/layoutreader
+# config a magic-pdf.json here for adding some customized configuration here. Default is false
+## model_dir path in image is：/root/.cache/modelscope/hub/models/opendatalab/PDF-Extract-Kit-1___0/models
+## layoutreader_model_dir path in image is: /root/.cache/modelscope/hub/models/ppaanngggg/layoutreader
+config:
+  enable: false
+  device: cuda # config device-mode for magic-pdf. Default is cuda. Avaliable is cpu
+  models_dir: /tmp/models # special model dir.
+  layoutreader_model_dir: /tmp/layoutreader #special layout model dir
+  magic_pdf_json: "" # 单独提供 magic-pdf.json 文件，更加灵活。
+## 如果需要启用nvidia的卡，设置以下的runtimeClassName为nvidia
+runtimeClassName: null # Avaliable values is nvidia
 resources: {}
 nodeSelector: {}
 tolerations: []
