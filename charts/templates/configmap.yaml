@@ -1,28 +1,5 @@
+{{- if and .Values.config .Values.config.enable }}
 apiVersion: v1
-data:
-  magic-pdf.json: |
-      {
-          "bucket_info": {
-              "bucket-name-1": [
-                  "ak",
-                  "sk",
-                  "endpoint"
-              ],
-              "bucket-name-2": [
-                  "ak",
-                  "sk",
-                  "endpoint"
-              ]
-          },
-          "models-dir": "/tmp/models",
-          "device-mode": {{ .Values.device | default "cuda" | quote }}
-          "table-config": {
-              "model": "TableMaster",
-              "is_table_recog_enable": true,
-              "max_time": 400
-          },
-          "layoutreader-model-dir": "/tmp/layoutreader"
-      }a
 kind: ConfigMap
 metadata:
   name: mineru-config
@@ -31,3 +8,33 @@ metadata:
     {{- include "mineru-server.annotations" . | nindent 4 }}
   labels:
     {{- include "mineru-server.labels" . | nindent 4 }}
+data:
+  {{- if .Values.config.magic_pdf_json }}
+  magic-pdf.json: |
+    {{- .Values.config.magic_pdf_json | nindent 4 }}
+  {{- else }}
+  magic-pdf.json: |
+    {
+        "bucket_info": {
+            "bucket-name-1": [
+                "ak",
+                "sk",
+                "endpoint"
+            ],
+            "bucket-name-2": [
+                "ak",
+                "sk",
+                "endpoint"
+            ]
+        },
+        "models-dir": {{ .Values.config.models_dir | quote }},
+        "layoutreader-model-dir": {{ .Values.config.layoutreader_model_dir | quote }},
+        "device-mode": {{ .Values.config.device | default "cuda" | quote }},
+        "table-config": {
+            "model": "TableMaster",
+            "is_table_recog_enable": true,
+            "max_time": 400
+        }
+    }
+  {{- end }}
+{{- end }}
