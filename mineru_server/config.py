@@ -9,6 +9,8 @@ DEFAULTS = {
     'PDF_CMD': 'magic-pdf',
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///mineru-server.db',
     'SQLALCHEMY_TRACK_MODIFICATIONS': "False",
+    'MAX_WORKER': 1,
+    'MAX_TASK_SIZE': 1,
 }
 
 

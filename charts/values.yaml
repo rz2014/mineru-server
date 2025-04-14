@@ -21,3 +21,5 @@ resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+max_worker: 1
+max_task_size: 1
