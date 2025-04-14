@@ -21,7 +21,6 @@ from flask_restful import Resource, marshal, marshal_with
 threadpool = BoundedThreadPoolExecutor()
 
 
-# threadpool = ThreadPoolExecutor(max_workers=2)
 
 
 class LocalPdfApi(Resource):

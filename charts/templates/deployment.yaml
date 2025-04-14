@@ -38,6 +38,11 @@ spec:
             name: host-tmp
         ports:
         - containerPort: 8300
+        env:
+        - name: MAX_WORKER
+          value: {{ .Values.max_worker | default "1" }}
+        - name: MAX_TASK_SIZE
+          value: {{ .Values.max_task_size | default "1" }}
         {{- with .Values.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
