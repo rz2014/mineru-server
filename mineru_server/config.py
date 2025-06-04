@@ -9,6 +9,7 @@ DEFAULTS = {
     'PDF_CMD': 'magic-pdf',
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///mineru-server.db',
     'SQLALCHEMY_TRACK_MODIFICATIONS': "False",
+    'STORAGE_LOCAL_PATH': 'storage',
 }
 
 
@@ -54,3 +55,5 @@ class Config:
         self.SQLALCHEMY_TRACK_MODIFICATIONS = get_bool_env(
             'SQLALCHEMY_TRACK_MODIFICATIONS'
         )
+
+        self.STORAGE_LOCAL_PATH = get_env("STORAGE_LOCAL_PATH")
