@@ -1,9 +1,10 @@
 name: Build and Push Docker image
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch
+  # push:
+  #   branches:
+  #     - master
 
 jobs:
   build-and-push:
@@ -22,11 +23,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Get Short SHA
+        id: vars
+        run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-10)" >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: |
-            rz2014/mineru-server:${{ github.sha::10 }}
+            rz2014/mineru-server:${{ env.SHORT_SHA }}
             rz2014/mineru-server:latest
