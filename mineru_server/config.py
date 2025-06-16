@@ -10,6 +10,8 @@ DEFAULTS = {
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///mineru-server.db',
     'SQLALCHEMY_TRACK_MODIFICATIONS': "False",
     'STORAGE_LOCAL_PATH': 'storage',
+    'MAX_WORKER': 1,
+    'MAX_TASK_SIZE': 1,
 }
 
 
