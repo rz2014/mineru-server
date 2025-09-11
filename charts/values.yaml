@@ -17,6 +17,7 @@ config:
   magic_pdf_json: "" # 单独提供 magic-pdf.json 文件，更加灵活。
 ## 如果需要启用nvidia的卡，设置以下的runtimeClassName为nvidia
 runtimeClassName: null # Avaliable values is nvidia
+nvidiaVisibleDevices: "all" # 设置为"all"表示使用所有的GPU卡，设置为"0"表示使用第一块卡，依次类推
 resources: {}
 nodeSelector: {}
 tolerations: []
