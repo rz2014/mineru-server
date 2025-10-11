@@ -6,7 +6,8 @@ dotenv.load_dotenv()
 
 DEFAULTS = {
     'WEB_URL': 'http://localhost:8300',
-    'PDF_CMD': 'magic-pdf',
+    'PDF_CMD': 'mineru',
+    'MINERU_BACKEND': 'vlm-vllm-engine',
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///mineru-server.db',
     'SQLALCHEMY_TRACK_MODIFICATIONS': "False",
     'STORAGE_LOCAL_PATH': 'storage',

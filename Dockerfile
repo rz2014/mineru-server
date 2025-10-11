@@ -1,11 +1,15 @@
-FROM rz2014/magic-pdf:latest
+# 使用官方基础镜像构建
+FROM rz2014/mineru-vllm:2.5.4
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ="Asia/Shanghai"
+ENV MINERU_MODEL_SOURCE=local
 
-LABEL ubuntu.version="22.04"
-LABEL tini.version="0.18.0"
+LABEL vllm_version="v0.10.1.1"
+LABEL maintainer="mineru-server"
+LABEL description="MinerU Server with Vllm Backend Support"
 
+# Install additional dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     apt-transport-https \
@@ -19,13 +23,20 @@ RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
 
 WORKDIR /app
 
+# Copy application files
 COPY mineru_server /app/mineru_server
 COPY requirements.txt /app/
-RUN /bin/bash -c "source /opt/mineru_venv/bin/activate && \
-    pip3 install -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
 
-ENV PDF_CMD=/opt/mineru_venv/bin/magic-pdf
-ENV PATH="/opt/mineru_venv/bin:${PATH}"
+# Install Flask dependencies
+RUN pip3 install --ignore-installed -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
+# Set MinerU configuration
+ENV PDF_CMD=/usr/local/bin/mineru
+ENV MINERU_BACKEND=vlm-vllm-engine
+ENV PATH="/usr/local/bin:${PATH}"
+
+# Expose port
+EXPOSE 8300
 
 ENTRYPOINT ["tini", "-g", "--"]
 CMD ["python3", "mineru_server/app.py"]

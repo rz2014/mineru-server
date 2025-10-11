@@ -83,7 +83,8 @@ class RemotePdfApi(Resource):
 
         try:
             exec = config.get_env('PDF_CMD')
-            command = f"{exec} -p {input_path} -m auto -o {output_path}"
+            backend = config.get_env('MINERU_BACKEND')
+            command = f"{exec} -p {input_path} -o {output_path} -m auto -b {backend}"
             logging.info("execute command: " + command)
             threadpool.submit(
                 60,
@@ -155,8 +156,9 @@ class LocalPdfApi(Resource):
         parse_type = args['type'] if args['type'] is not None else 'auto'
         try:
             exec = config.get_env('PDF_CMD')
+            backend = config.get_env('MINERU_BACKEND')
             command = (
-                f"{exec} -p {args['file_path']} -m {parse_type} -o {args['output_dir']}"
+                f"{exec} -p {args['file_path']} -o {args['output_dir']} -m {parse_type} -b {backend}"
             )
             logging.info("execute command: " + command)
             task_id = str(uuid.uuid4())
